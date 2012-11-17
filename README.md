@@ -12,8 +12,7 @@ My supervisors are:
 
 This repository will contain:
 - all of the code and architecture of the system
-- my dissertation in tex, pdf
-- Wiki
+- Wiki, documentation
 
 More information about us: http://raspberrypicloud.wordpress.com/ .
 
