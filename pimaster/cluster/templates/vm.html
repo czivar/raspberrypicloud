@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Template edit</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+		{% include "sidemenu.html" %}
+		<div id="rightcontent">
+			<h2> Edit virtual machine </h2>
+			<div id="stylized" class="myform">
+				<form action="{% url vms %}" method="post"> {% csrf_token %}
+					{{ form.non_field_errors }} 
+					<label>
+					{{ from.name }}
+					<span class="small">{{ form.name.errors }}</span>
+					</label>
+					<input type="submit" value="Submit" />
+					<div class="spacer"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+	{% include "footer.html" %}
+</div>
+
+</body>
+</html>

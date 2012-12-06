@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Template management</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+</head>
+
+
+<body>
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+		{% include "sidemenu.html" %}
+		<div id="rightcontent">
+			<h2> Available templates </h2>
+			<table class="sample" width="830px">
+				<thead><th>ID</th><th>Name</th><th>Storage</th><th>MEM</th><th>CPU</th><th>Comment</th><th></th></thead>
+			{% for template in templates %}
+				<tr>
+					<td>{{template.id}}</td>
+					<td>{{template.name}}</td>
+					<td>{{template.storage}}</td>
+					<td>{{template.memory}}</td>
+					<td>{{template.cpu}}</td>
+					<td>{{template.comment}}</td>
+					<td width="40px">&nbsp;<a href="{% url template template.id%}"><img src="/static/admin/img/icon_changelink.gif" /></a>&nbsp;&nbsp;
+						<a href="{% url template_delete template.id%}"><img src="/static/admin/img/icon_deletelink.gif" /></a>
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<br />
+			<h2> Create new template </h2>
+			<div id="stylized" class="myform">
+				<form action="{% url templates %}" method="post"> {% csrf_token %} 
+					{% for field in form %}
+						<label>
+							{{ field.label }}
+							{% if field.errors %}
+								<span class="small"> {% for error in field.errors %} {{ error }} &nbsp; {% endfor %} </span>
+							{% endif %}
+						</label>
+						{{ field }} 
+					{% endfor %}
+					<input type="submit" value="Create template" />
+					<div class="spacer"></div>
+				</form>
+			</div>
+			<br />
+		</div>
+	</div>
+	{% include "footer.html" %}
+</div>
+
+</body>
+</html>

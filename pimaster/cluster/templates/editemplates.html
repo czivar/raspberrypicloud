@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Node information</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+		<h1> {{ template.name }} </h1>	
+	</div>
+	{% include "footer.html" %}
+</div>
+
+</body>
+</html>

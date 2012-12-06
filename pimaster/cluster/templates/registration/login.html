@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Raspberry Pi Cloud login</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+	<link href='{% static "css/login.css" %}' rel='stylesheet' type='text/css'>
+	<script>
+		$(document).ready( function() {
+			if ( document.getElementById('id_username').value == "") {
+				document.getElementById('id_username').focus();
+			} else {
+				document.getElementById('id_password').focus();
+			}
+		})
+	</script>
+</head>
+
+
+<body class="login">
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+		<div id="formbox">
+			<h4 style="font-size: 16px; color: red;"> 
+				<div> 
+					{% if form.errors %}
+				   Your username and password didn't match. Please try again. <br />
+					{% endif %}
+				</div>
+			</h4>
+			<br />
+			<br />
+			<br />
+			 <form id="login" method="post" action="{% url django.contrib.auth.views.login %}">
+					{% csrf_token %}
+					<table>
+						<tr><td>{{ form.username.label_tag }}</td><td>{{ form.username }}</td></tr>
+						<tr><td>{{ form.password.label_tag }}</td><td>{{ form.password }}</td></tr>
+					</table>
+				<input type="hidden" name="next" value="/management" />
+				<input value="Login" tabindex="100" type="submit">
+			</form>
+		</div>
+   </div>
+	{% include "footer.html" %}
+</div>
+</body>
+</html>
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Node information</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="/static/js/chart1.js"></script>
+	<script type="text/javascript" src="/static/js/EventHelpers.js"></script>
+	<script type="text/javascript" src="/static/js/DragDropHelpers.js"></script>
+	<script type="text/javascript" src="/static/js/permissionForm.js"></script>
+</head>
+<body>
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+	<h2> Red Rack summary</h2>
+		<div style="width:50%; float: left;">
+			<table class="sample">
+				<tr><td>Number of total nodes</td><td>{{nodes|length}}</td></tr>
+				<tr><td>Running nodes</td><td>{{actives|length}}</td></tr>
+				<tr><td>Offline nodes</td><td>{{offlines|length}}</td></tr>
+				<tr><td>Usage</td><td>{{usage}}</td></tr>
+				<tr><td>Running virtual machines</td><td>{{runningvms}}</td></tr>
+			</table>
+		</div>
+		<div style="width:50%; float: left;">
+			<table class="sample" style="float: left; text-align: center; margin-left: 100px;">
+				<tr><td>Left</td></tr>
+			{% for node in nodes %}
+			  {% if node <= 7 %}
+				{% if node in actives %}
+				<tr><td id="green"><a id="nodelink" href="../../node/{{ node }}/">Pi{{ node }}</a></td></tr>
+				{% else %}
+				<tr><td id="red"><a id="nodelink" href="../../node/{{ node }}/">Pi{{ node }}</a></td></tr>
+				{% endif %}
+			  {% endif %}
+			{% endfor %}
+			</table>
+			<table class="sample" style="text-align: center; ">
+				<tr><td>Right</td></tr>
+			{% for node in nodes %}
+			  {% if node > 7 %}
+				{% if node in actives %}
+				<tr><td id="green"><a id="nodelink" href="../../node/{{ node }}/">Pi{{ node }}</a></td></tr>
+				{% else %}
+				<tr><td id="red"><a id="nodelink" href="../../node/{{ node }}/">Pi{{ node }}</a></td></tr>
+				{% endif %}
+			  {% endif %}
+			{% endfor %}
+			</table>
+		</div>
+	  <br />
+	  Last checked: {{ lastcheck }}
+   </div>
+	{% include "footer.html" %}
+</div>
+</body>
+</html>

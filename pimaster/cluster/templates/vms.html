@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Template management</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+</head>
+
+
+<body>
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+		{% include "sidemenu.html" %}
+		<div id="rightcontent">
+			<h2> Available VMs </h2>
+			<table class="sample" width="830px">
+				<thead><th>ID</th><th>Name</th><th>Template</th><th>State</th><th>Node</th><th></th></thead>
+			{% for vm in vms %}
+				<tr>
+					<td>{{vm.id}}</td>
+					<td>{{vm.name}}</td>
+					<td>{{vm.template}}</td>
+					<td>{{vm.state}}</td>
+					<td>{{vm.node}}</td>
+					<td width="40px">&nbsp;<a href="{% url vm vm.id%}"><img src="/static/admin/img/icon_changelink.gif" /></a>&nbsp;&nbsp;
+						<a href="{% url vm_delete vm.id%}"><img src="/static/admin/img/icon_deletelink.gif" /></a>
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<br />
+			<h2> Create new VM </h2>
+			<div id="stylized" class="myform">
+				<form action="{% url vms %}" method="post"> {% csrf_token %} 
+					{% for field in form %}
+						<label>
+							{{ field.label }}
+							{% if field.errors %}
+								<span class="small"> {% for error in field.errors %} {{ error }} &nbsp; {% endfor %} </span>
+							{% endif %}
+						</label>
+						{{ field }} 
+					{% endfor %}
+					<input type="submit" value="Create VM" />
+					<div class="spacer"></div>
+				</form>
+			</div>
+			<br />
+		</div>
+	</div>
+	{% include "footer.html" %}
+</div>
+
+</body>
+</html>

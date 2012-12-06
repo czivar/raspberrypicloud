@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Node information</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+		{% if uptime == "offline" %}
+			<div class="system-message error"> Sorry, this Raspberry Pi is not available. </div>
+		{% else %}
+		<fieldset>
+		<legend> Node {{ nodeid }} </legend>
+		<table style="float:left;" class="sample">
+			<tr><td> Load </td> <td> {{ load }} </td> </tr>
+			<tr><td> Running VMs </td> <td> {{ vms|length }} </td> </tr>
+			<tr><td> Uptime </td> <td> {{ uptime }} </td> </tr>
+		</table>
+		<div id="computer"> &nbsp </div>
+		</fieldset>
+		<fieldset>
+			<legend> Running VMs on this node </legend>
+			{% if vms %}
+			<ul>
+			 {% for vm in vms %}
+				<li>{{ vm }}</li>
+			 {% endfor %}
+			</ul>
+			{% else %}
+				<p>No VMs are available.</p>
+			{% endif %}
+		</fieldset>
+		{% endif %}
+	</div>
+	{% include "footer.html" %}
+</div>
+
+</body>
+</html>

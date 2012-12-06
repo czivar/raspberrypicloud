@@ -1,0 +1,36 @@
+#formbox{
+	text-align: center;
+}
+
+form#login table {
+  border: 0;
+  margin: auto;
+  padding: 0;
+}
+
+form#login label {
+	font-variant: small-caps;
+}
+
+form#login input {
+	width: 125px;
+	margin: 5px;
+	border: 1px solid #000000;
+}
+
+form#login input[type=submit] {
+	font-variant: small-caps;
+}
+
+form#login input:hover {
+	border: 1px dotted #990000;
+}
+
+form#login input:focus {
+	border: 1px solid #CC0000;
+}
+
+form#login input[type=submit], form#login input[type=button] {
+	background-color: #CCCCCC;
+}
+

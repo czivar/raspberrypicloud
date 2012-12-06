@@ -1,0 +1,30 @@
+<div id="header">
+	<h1> PiCloud by University of Glasgow </h1>	
+	<div id="navigationbar">
+		&nbsp;	
+		<div id="navigation">
+			<ul>
+			{% if user.is_authenticated %}
+				<li><a href="{% url home %}">Overview</a></li>
+				<li><a href="{% url services %}">Services</a></li>
+				<li><a href="{% url nodes %}">Nodes</a></li>
+				{% if user.is_staff %}
+				<li><a href="{% url nodes %}">Management</a></li>
+				{% endif %}
+			{% endif %}
+			</ul>
+		</div>
+		<div id="logout">
+			{% if user.is_authenticated %}
+			<ul>
+				<li><a href="{% url profile %}"> Profile </a></li>
+				<li><a href="{% url logout %}"> Logout </a></li>
+			</ul>
+			{% else %}
+			<ul>
+				<li><a href="{% url login %}"> Login </a></li>
+			</ul>
+			{% endif %}
+		</div>
+	</div>
+</div>

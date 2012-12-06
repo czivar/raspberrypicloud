@@ -5,10 +5,7 @@ Our intention is to use the Pi to replicate a modern 500 million dollar datacent
 
 This is my final project at University of Glasgow in 2012/2013.
 
-My supervisors are: 
-- Jeremy Singer (University of Glasgow)
-- David R. White (University of Glasgow)
-- Imre Szeberenyi (Budapest University of Technology and Economics) 
+The project is IN PROGRESS, the code is not available for production use.
 
 This repository will contain:
 - all of the code and architecture of the system
