@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Template management</title>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="/static/css/tooltipster.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.tooltipster.min.js"></script>
+	<script>
+	$(function() {
+		$('.tooltip').tooltipster();
+	});
+	</script>
+</head>
+<body>
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+			<h2> Available users </h2>
+			<table class="sample" width="100%">
+				<thead><th>ID</th><th>Username</th><th>Name</th><th>E-mail</th><th>VMs</th><th>Templates</th><th></th></thead>
+				{% for user in users %}
+				<tr>
+					<td>{{user.id}}</td>
+					<td>{{user.username}}</td>
+					<td>{{user.first_name}} {{user.last_name}}</td>
+					<td>{{user.email}}</td>
+					<td>{{user.vms}}</td>
+					<td>{{user.templates}}</td>
+					<td width="30px">
+						{% if user.is_staff %}ADM{% else %}
+						<a class="tooltip" style="text-align: center;" title="Deletes all VMs and templates from the user." href="{% url user_delete user.id%}">
+							<img src="/static/admin/img/icon_deletelink.gif" />
+						</a> {% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+				<p style="font-style: italic;">Note: Users can not be modified in this release.</p>
+			<h2> Create new user </h2>
+			<div id="stylized" class="myform">
+				<form action="{% url users %}" method="post"> {% csrf_token %} 
+					{% for field in form %}
+						<label>
+							{{ field.label }}
+							{% if field.errors %}
+								<span class="small"> {% for error in field.errors %} {{ error }} &nbsp; {% endfor %} </span>
+							{% endif %}
+						</label>
+						{{ field }} 
+					{% endfor %}
+					<input type="submit" value="Create user" />
+					<div class="spacer"></div>
+				</form>
+			</div>
+			<br />
+	</div>
+	{% include "footer.html" %}
+</div>
+
+</body>
+</html>

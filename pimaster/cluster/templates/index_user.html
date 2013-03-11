@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load  static from staticfiles %}
+	<title>Cluster management</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+<div id="container">
+	{% include "header.html" %}
+    <div id="content">
+		<h2> Welcome {{ user.first_name }} {{ user.last_name }}!</h2>
+		You can:
+		<ul>
+			<li> manage your virtual machines </li>
+			<li> manage your templates </li>
+			<li> see your profile </li>
+		</ul>
+		<h2> Statistics </h2>
+		<table width="100%">
+			<tr>
+			<td width="50%">
+				You are currently consuming:
+				<ul>
+					<li> {{ usingcpu }} MHz of CPU </li>
+					<li> {{ usingmem }} MB of memory </li>
+					<li> {{ usingdisk }} MB of disk </li>
+				</ul>
+			</td>
+			<td width="50%">
+				The Raspberry Pi Cloud has free and online:
+				<ul>
+					<li> {{ allcpu }} MHz of CPU </li>
+					<li> {{ allmem }} MB of memory </li>
+					<li> {{ alldisk }} MB of disk </li>
+				</ul>
+			</td>
+			</tr>
+		</table>
+	</div>
+	{% include "footer.html" %}
+</div>
+</body>
+</html>
