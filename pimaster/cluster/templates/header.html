@@ -5,11 +5,13 @@
 		<div id="navigation">
 			<ul>
 			{% if user.is_authenticated %}
-				<li><a href="{% url home %}">Overview</a></li>
-				<li><a href="{% url services %}">Services</a></li>
-				<li><a href="{% url nodes %}">Nodes</a></li>
+				<li> <a href="{% url home %}">Overview</a></li>
+				<li> <a href="{% url vms %}"> Virtual Machines </a> </li>
+				<li> <a href="{% url templates %}"> Templates </a> </li>
+				<!--- <li><a href="{% url nodes %}">Nodes</a></li> -->
 				{% if user.is_staff %}
-				<li><a href="{% url nodes %}">Management</a></li>
+				<li> <a href="{% url users %}"> Users </a> </li>
+				<!-- <li><a href="{% url nodes %}">Administration</a></li> -->
 				{% endif %}
 			{% endif %}
 			</ul>

@@ -12,20 +12,27 @@
 <div id="container">
 	{% include "header.html" %}
     <div id="content">
-		{% include "sidemenu.html" %}
-		<div id="rightcontent">
+			<h2> What is a virtual machine? </h2>
+			Virtual machine is a running instance of a template. You have to provide only two details to create a virtual machine in this cloud:
+			<ul>
+				<li> Name: Name of your virtual machine. </li>
+				<li> Template: Choose one of your templates. </li>
+			</ul>
 			<h2> Available VMs </h2>
-			<table class="sample" width="830px">
-				<thead><th>ID</th><th>Name</th><th>Template</th><th>State</th><th>Node</th><th></th></thead>
+			<table class="sample" width="100%">
+				<thead><th>ID</th><th>Name</th><th>Template</th><th>State</th><th>Node</th>{% if user.is_staff %}<th>User</th>{% endif %}<th></th></thead>
 			{% for vm in vms %}
 				<tr>
 					<td>{{vm.id}}</td>
 					<td>{{vm.name}}</td>
 					<td>{{vm.template}}</td>
-					<td>{{vm.state}}</td>
+					<td>{{vm.get_state_display}}</td>
 					<td>{{vm.node}}</td>
-					<td width="40px">&nbsp;<a href="{% url vm vm.id%}"><img src="/static/admin/img/icon_changelink.gif" /></a>&nbsp;&nbsp;
-						<a href="{% url vm_delete vm.id%}"><img src="/static/admin/img/icon_deletelink.gif" /></a>
+					{%if user.is_staff %} <td>{{vm.user}}</td> {% endif %}
+					<td width="130px">&nbsp;
+						<a href="{% url vm_start vm.id%}"><img src="/static/css/play.png" alt="start" /></a>&nbsp;&nbsp;
+						<a href="{% url vm_stop vm.id%}"><img src="/static/css/stop.png" alt="stop" /></a>&nbsp;&nbsp;
+						<a href="{% url vm_delete vm.id%}"><img src="/static/css/delete.png" alt="delete" /></a>
 					</td>
 				</tr>
 			{% endfor %}
@@ -48,7 +55,6 @@
 				</form>
 			</div>
 			<br />
-		</div>
 	</div>
 	{% include "footer.html" %}
 </div>

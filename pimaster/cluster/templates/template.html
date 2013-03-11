@@ -10,21 +10,23 @@
 <div id="container">
 	{% include "header.html" %}
     <div id="content">
-		{% include "sidemenu.html" %}
-		<div id="rightcontent">
 			<h2> Edit Template </h2>
 			<div id="stylized" class="myform">
-				<form action="{% url templates %}" method="post"> {% csrf_token %}
-					{{ form.non_field_errors }} 
-					<label>
-					{{ from.name }}
-					<span class="small">{{ form.name.errors }}</span>
-					</label>
-					<input type="submit" value="Submit" />
+				<form action="{% url template id %}" method="post"> {% csrf_token %} 
+					{% for field in form %}
+						<label>
+							{{ field.label }}
+							{% if field.errors %}
+								<span class="small"> {% for error in field.errors %} {{ error }} &nbsp; {% endfor %} </span>
+							{% endif %}
+						</label>
+						{{ field }} 
+					{% endfor %}
+					<input type="submit" value="Edit template" />
 					<div class="spacer"></div>
 				</form>
 			</div>
-		</div>
+			<br />
 	</div>
 	{% include "footer.html" %}
 </div>

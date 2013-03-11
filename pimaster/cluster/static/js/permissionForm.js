@@ -43,26 +43,17 @@ var permissionForm = new function () {
 	
 	
 	function userDropListEvent(e) {
-		/*
-		 * To ensure that what we are dropping here is from this page
-		 */
-		
 		var data = e.dataTransfer.getData("Text");
-		if (data.indexOf("ip-") != 0) {
-			alert("Only machines within this page are draggable.")
-		}
-		
 		currentlyDraggedNode.parentNode.removeChild(currentlyDraggedNode);
 		this.appendChild(currentlyDraggedNode);
 		userDragEndEvent(e);
 		//cool stuff
 		var to = $(this).closest("td").attr("id");
-		var from = e.dataTransfer.getData("From")
-		var url1 = "http://"+to+".dcs.gla.ac.uk:9999/start/"+data;
-		var url2 = "http://"+from+".dcs.gla.ac.uk:9999/stop/"+data;
+		var idPattern = /id-\d+/g;
+		var numberPattern = /\d+/g;
+		var idData = data.match(idPattern);
+		var url1 = "/management/vm/migrate/"+idData[0].match(numberPattern)+"/"+to;
 		$.get(url1, function(data, status) {
-		}, 'html');
-		$.get(url2, function(data, status) {
 		}, 'html');
 	}
 	

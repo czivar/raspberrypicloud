@@ -11,21 +11,9 @@ NODE_STATE = (
 VM_STATE = (
     (0, 'No State'),
     (1, 'Running'),
-    (2, 'Running'),
-    (3, 'Paused by user '),
-    (4, 'Being shut down'),
-    (5, 'Shut off'),
-    (6, 'Crashed'),
-    (95,'Reboot by user'),
-    (96,'Powered Off by user'),
-    (97,'Wait Migrate'),
-    (98,'Powered Off'),
-    (99,'Disabled')
+    (5, 'Crashed'),
+    (6, 'Powered Off'),
     )
-
-class StartVMForm(forms.Form):
-	name = forms.CharField(max_length=100)
-	node = forms.CharField(max_length=100)
 
 class Rack(models.Model):
 	def __unicode__(self):
@@ -42,9 +30,17 @@ class Node(models.Model):
 	rack = models.ForeignKey(Rack)
 	state = models.IntegerField(default=0, choices=NODE_STATE, null=False)
 	lastchecked = models.DateTimeField(auto_now=True, null=False)
+	datemodified = models.DateTimeField(auto_now=True, null=False)
 
 	def getNumber():
 		return filter(lambda x: x.isdigit(), name)
+
+	def _get_utilization(self):
+		util = 0
+		for i in VM.objects.filter(node=self):
+			util += i.utilization
+		return util
+	utilization = property(_get_utilization)
 
 class Template(models.Model):
 	def __unicode__(self):
@@ -52,11 +48,16 @@ class Template(models.Model):
 
 	name = models.CharField(max_length=30)
 	user = models.ForeignKey(User)
-	memory = models.IntegerField()
-	cpu = models.IntegerField()
-	comment = models.CharField(max_length=80)
+	cpu = models.IntegerField(null=False)
+	memory = models.IntegerField(null=False)
+	disk = models.IntegerField(null=False)
+	comment = models.CharField(max_length=80, null=True, blank=True)
 	datecreated = models.DateTimeField(auto_now_add=True, null=False)
 	datemodified = models.DateTimeField(auto_now=True, null=False)
+
+	def _get_utilization(self):
+		return int((7 * self.cpu + 2 * self.memory + 1 * self.disk) / 10)
+	utilization = property(_get_utilization)
 	
 class VM(models.Model):
 	def __unicode__(self):
@@ -71,3 +72,15 @@ class VM(models.Model):
 	datecreated = models.DateTimeField(auto_now_add=True, null=False)
 	datemodified = models.DateTimeField(auto_now=True, null=False)
 	
+	def _get_utilization(self):
+		return self.template.utilization
+	utilization = property(_get_utilization)
+
+class NodePerformanceData(models.Model):
+	def __unicode__(self):
+		return self.node.name
+
+	node = models.ForeignKey(Node)
+	date = models.DateTimeField(auto_now_add=True, null=False)
+	metric = models.IntegerField(default=0)
+	value = models.FloatField(null=False)

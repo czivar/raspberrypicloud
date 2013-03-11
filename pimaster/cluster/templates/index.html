@@ -1,92 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-{% load  static from staticfiles %}
-	<title>Cluster management</title>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
-	<script type="text/javascript" src="/static/js/EventHelpers.js"></script>
-	<script type="text/javascript" src="/static/js/DragDropHelpers.js"></script>
-	<script type="text/javascript" src="/static/js/permissionForm.js"></script>
-	<script>
-		$(document).ready(function(){
-			setInterval(function(){
-				$('#content').load(' #content', function(){$(this).children().unwrap()});
-			}, 5000);
-		});
-	</script>
-</head>
-
-
-<body>
-<div id="container">
-	{% include "header.html" %}
-    <div id="content">
-		<h2> RED rack </h2>
-                <table class="userTable" style="background: #F5F2F2;">
+	<head>
+		{% load  static from staticfiles %}
+		<title>Cluster management</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="/static/css/tooltipster.css" />
+		<script type="text/javascript" src="/static/js/EventHelpers.js"></script>
+		<script type="text/javascript" src="/static/js/DragDropHelpers.js"></script>
+		<script type="text/javascript" src="/static/js/permissionForm.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.tooltipster.min.js"></script>
+		<script>
+			$(function() {
+				$('.tooltip').tooltipster();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			{% include "header.html" %}
+			<div id="content">
+				<div style="float: left;"><h2> RED rack </h2></div>
+				<div style="float: right; text-align: right; margin-right: 5px;">
+					<a href="loadbalance" class="tooltip" title="Beta"><img src="/static/css/balancelogo.png" width="70%" height="70%" alt="Load-balance" />	</a>
+				</div>
+				<table class="userTable" style="background: #F5F2F2;">
 					<thead>
 						<tr>
 							{% for node in nodes %}
-								{% if forloop.counter <= 7 %}
-									{% if node.state = 1 %}
-										<th id="green"><a id="nodelink" href="node/{{ node.name  }}">{{node.name}}</a></th>
-									{% else %}
-										<th id="red"><a id="nodelink" href="node/{{ node.name }}">{{node.name}}</a></th>
-									{% endif %}
-								{% endif %}
+							{% if forloop.counter <= 7 %}
+							{% if node.state = 1 %}
+							<th id="green"><a id="nodelink" href="node/{{ node.name  }}">{{node.name}}</a></th>
+							{% else %}
+							<th id="red"><a id="nodelink" href="node/{{ node.name }}">{{node.name}}</a></th>
+							{% endif %}
+							{% endif %}
 							{% endfor %}
 						</tr>
-                    </thead>
-                    <tbody>
+					</thead>
+					<tbody>
 						<tr>
 							{% for key, value in vmlist.items  %}
 							{% if key <= 7  %}
-								<td id="pi{{key}}" class="userList">
-									{% for val in value %}
-										{% if val %}
-											<a href ="#" draggable="true">{{ val }}</a>
-										{% endif %}
-									{% endfor %}
-											<a id="running" href ="#" draggable="true">id-001</a>
-											<a href ="#" draggable="true">pi-563</a>
-								</td>
+							<td id="pi{{key}}" class="userList">
+								{% for val in value %}
+								{% if val %}
+								<a href ="#" draggable="true" class="tooltip" 
+									title="
+									<table width='250px'>
+										<tr><td colspan='2' align='center'> <b>Virtual Machine {{ val.id }}</b></td></tr>
+										<tr><td>Name:</td><td> {{ val.name }}</td></tr>
+										<tr><td>State:</td><td> {{ val.get_state_display }}</td></tr>
+										<tr><td>Template:</td><td> {{ val.template }}</td></tr>
+										<tr><td>CPU:</td><td> {{ val.template.cpu }} MHz</td></tr>
+										<tr><td>MEM:</td><td> {{ val.template.memory }} MB</td></tr>
+										<tr><td>DISK:</td><td> {{ val.template.disk }} MB</td></tr>
+										<tr><td>User:</td><td> {{ val.user }}</td></tr>
+									</table>">
+									<span style="margin-left: 15px; ">id-{{ val.id|stringformat:"02d" }}</div>
+									{% if val.state = 1 %}
+									<img align="right" style="margin-top: 2px; padding-right: 5px;" src="/static/css/on.png" />
+									{% else %}
+									<img align="right" style="margin-top: 2px; padding-right: 5px;" src="/static/css/off.png" />
+									{% endif %}
+								</a>
+								{% endif %}
+								{% endfor %}
+							</td>
 							{% endif %}
 							{% endfor %}
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="userTable" style="background: #F5F2F2;">
-                    <thead>
-                        <tr>
+						</tr>
+					</tbody>
+				</table>
+				<table class="userTable" style="background: #F5F2F2;">
+					<thead>
+						<tr>
 							{% for node in nodes %}
-								{% if forloop.counter > 7 %}
-									{% if node.state = 1 %}
-										<th id="green"><a id="nodelink" href="node/{{ node.name }}">{{ node.name }}</a></th>
-									{% else %}
-										<th id="red"><a id="nodelink" href="node/{{ node.name }}">{{ node.name }}</a></th>
-									{% endif %}
-								{% endif %}
+							{% if forloop.counter > 7 %}
+							{% if node.state = 1 %}
+							<th id="green"><a id="nodelink" href="node/{{ node.name }}">{{ node.name }}</a></th>
+							{% else %}
+							<th id="red"><a id="nodelink" href="node/{{ node.name }}">{{ node.name }}</a></th>
+							{% endif %}
+							{% endif %}
 							{% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
 							{% for key, value in vmlist.items  %}
 							{% if key > 7  %}
-								<td id="pi{{key}}" class="userList">
-									{% for val in value %}
-										{% if val %}
-											<a href ="#" draggable="true">{{ val }}</a>
-										{% endif %}
-									{% endfor %}
-								</td>
+							<td id="pi{{key}}" class="userList">
+								{% for val in value %}
+								{% if val %}
+								<a href ="#" draggable="true" class="tooltip" 
+									title="
+									<table width='250px'>
+										<tr><td colspan='2' align='center'> <b>Virtual Machine {{ val.id }}</b></td></tr>
+										<tr><td>Name:</td><td> {{ val.name }}</td></tr>
+										<tr><td>State:</td><td> {{ val.get_state_display }}</td></tr>
+										<tr><td>Template:</td><td> {{ val.template }}</td></tr>
+										<tr><td>CPU:</td><td> {{ val.template.cpu }} MHz</td></tr>
+										<tr><td>MEM:</td><td> {{ val.template.memory }} MB</td></tr>
+										<tr><td>DISK:</td><td> {{ val.template.disk }} MB</td></tr>
+										<tr><td>User:</td><td> {{ val.user }}</td></tr>
+									</table>">
+									<span style="margin-left: 15px; ">id-{{ val.id|stringformat:"02d" }}</div>
+									{% if val.state = 1 %}
+									<img align="right" style="margin-top: 2px; padding-right: 5px;" src="/static/css/on.png" />
+									{% else %}
+									<img align="right" style="margin-top: 2px; padding-right: 5px;" src="/static/css/off.png" />
+									{% endif %}
+								</a>
+								{% endif %}
+								{% endfor %}
+							</td>
 							{% endif %}
 							{% endfor %}
-                        </tr>
-                    </tbody>
-                </table>
-	</div>
-	{% include "footer.html" %}
-</div>
-</body>
-</html>
+						</tr>
+					</table>
+					<fieldset>
+						<legend> Performance overview </legend>
+						{% load chart_tags %}
+						{% chart %}
+						chxt=y
+						chxr=0,0.05,1.2
+						chbh=a
+						chs=960x280
+						cht=bvg
+						chco=ffdead,8b8378,000000,191970,1e90ff,add8e6,006400,7cfc00,6b8e23,ffff00,cd5c5c,ff8c00,ff0000,ff1493,9400d3
+						chds=0,1
+						chd=t:{{ perfdata|join:'|' }}
+						chdl=Pi1|Pi2|Pi3|Pi4|Pi5|Pi6|Pi7|Pi8|Pi9|Pi10|Pi11|Pi12|Pi13|Pi14
+						chtt=Load+Average
+						{% endchart %}
+					</fieldset>
+				</div>
+				{% include "footer.html" %}
+			</div>
+		</body>
+	</html>

@@ -1,66 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-{% load  static from staticfiles %}
-	<title>Profile</title>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
-</head>
-<body>
-<div id="container">
-	{% include "header.html" %}
-    <div id="content">
-		<div style="width: 50%; float: left;">
-			<h2> Profile </h2>
-			<table class="sample" width="490px">
-				<tr><td><b>Name </b></td><td> {{ user.first_name }} {{ user.last_name }} </td></tr>
-				<tr><td><b>Username </b></td><td> {{ user.username }} </td></tr>
-				<tr><td><b>E-mail </b></td><td> {{ user.email }} </td></tr>
-				<tr><td><b>Last login </b></td><td> {{ user.last_login }} </td></tr>
-				<tr><td><b>Registered </b></td><td> {{ user.date_joined }} </td></tr>
-			</table>
+	<head>
+		{% load  static from staticfiles %}
+		<title>Profile</title>
+		<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		<div id="container">
+			{% include "header.html" %}
+			<div id="content">
+				<div style="width: 50%; float: left;">
+					<h2> Profile </h2>
+					<table class="sample" width="490px">
+						<tr><td><b>Name </b></td><td> {{ user.first_name }} {{ user.last_name }} </td></tr>
+						<tr><td><b>Username </b></td><td> {{ user.username }} </td></tr>
+						<tr><td><b>E-mail </b></td><td> {{ user.email }} </td></tr>
+						<tr><td><b>Last login </b></td><td> {{ user.last_login }} </td></tr>
+						<tr><td><b>Registered </b></td><td> {{ user.date_joined }} </td></tr>
+					</table>
+				</div>
+				<div>
+					<h2> Services </h2>
+					<table class="sample" width="490px">
+						<tr><td><b>Templates </b></td><td> {{ templates }} </td></tr>
+						<tr><td><b>VM's </b></td><td> {{ vms }} </td></tr>
+						<tr><td><b>Using CPU </b></td><td> {{ usingcpu }} MHz </td></tr>
+						<tr><td><b>Using Memory </b></td><td> {{ usingmem }} MB</td></tr>
+						<tr><td><b>Using Disk </b></td><td> {{ usingdisk }} MB</td></tr>
+					</table>
+				</div>
+				<br />
+				<h2> Recent actions</h2>
+				<table class="sample" width="990px">
+					<tr>
+						<th>Event</th>
+						<th>Message</th>
+						<th>Type</th>
+						<th>Time</th>
+					</tr>
+					{% for logentry in logentries %}
+					<tr>
+						{% if logentry.action_flag = 1 %}
+						<td align="center"><img src="/static/admin/img/icon_addlink.gif" /></td>
+						<td> Created new entity. </td>
+						{% endif %}
+						{% if logentry.action_flag = 2 %}
+						<td align="center"><img src="/static/admin/img/icon_changelink.gif" /></td>
+						<td>{{ logentry.change_message }}</td>
+						{% endif %}
+						{% if logentry.action_flag = 3 %}
+						<td align="center"><img src="/static/admin/img/icon_deletelink.gif" /></td>
+						<td> Deleted entity. </td>
+						{% endif %}
+						<td>{{ logentry.content_type|capfirst }}</td>
+						<td>{{ logentry.action_time }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+			{% include "footer.html" %}
 		</div>
-		<div>
-			<h2> Services </h2>
-			<table class="sample" width="490px">
-				<tr><td><b>Templates </b></td><td> {{ templates }} </td></tr>
-				<tr><td><b>VM's </b></td><td> {{ vms }} </td></tr>
-				<tr><td><b>Used CPU </b></td><td> {{ usedcpu }} </td></tr>
-				<tr><td><b>Used Memory </b></td><td> {{ usedmem }} </td></tr>
-				<tr><td><b>Used Time </b></td><td> {{ usedmem }} </td></tr>
-			</table>
-		</div>
-		<br />
-		<h2> Recent actions</h2>
-		<table class="sample" width="990px">
-			<tr>
-				<th>Event</th>
-				<th>Message</th>
-				<th>Type</th>
-				<th>Time</th>
-			</tr>
-		{% for logentry in logentries %}
-			<tr>
-				{% if logentry.action_flag = 1 %}
-					<td align="center"><img src="/static/admin/img/icon_addlink.gif" /></td>
-					<td> Created new entity. </td>
-				{% endif %}
-				{% if logentry.action_flag = 2 %}
-					<td align="center"><img src="/static/admin/img/icon_changelink.gif" /></td>
-					<td>{{ logentry.change_message }}</td>
-				{% endif %}
-				{% if logentry.action_flag = 3 %}
-					<td align="center"><img src="/static/admin/img/icon_deletelink.gif" /></td>
-					<td> Deleted entity. </td>
-				{% endif %}
-				<td>{{ logentry.content_type|capfirst }}</td>
-				<td>{{ logentry.action_time }}</td>
-			</tr>
-		{% endfor %}
-		</table>
-	</div>
-	{% include "footer.html" %}
-</div>
-
-</body>
+	</body>
 </html>

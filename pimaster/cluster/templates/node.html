@@ -10,31 +10,58 @@
 <div id="container">
 	{% include "header.html" %}
     <div id="content">
-		{% if uptime == "offline" %}
-			<div class="system-message error"> Sorry, this Raspberry Pi is not available. </div>
-		{% else %}
 		<fieldset>
-		<legend> Node {{ nodeid }} </legend>
+		<legend> Node {{ node.name }} </legend>
 		<table style="float:left;" class="sample">
 			<tr><td> Load </td> <td> {{ load }} </td> </tr>
-			<tr><td> Running VMs </td> <td> {{ vms|length }} </td> </tr>
+			<tr><td> VMs on this node </td> <td> {{ vms|length }} </td> </tr>
 			<tr><td> Uptime </td> <td> {{ uptime }} </td> </tr>
 		</table>
 		<div id="computer"> &nbsp </div>
 		</fieldset>
+		{% if uptime == "offline" %}
+			<div class="system-message error"> Sorry, this Raspberry Pi is offline from {{ node.datemodified }}. </div>
+		{% endif %}
 		<fieldset>
-			<legend> Running VMs on this node </legend>
+			<legend> VMs on this node </legend>
 			{% if vms %}
-			<ul>
+			<table class="sample" width="100%">
+				<tr><th>Name</th><th>Template</th><th>ID</th><th>User</th><th>State</th><th></th></tr>
 			 {% for vm in vms %}
-				<li>{{ vm }}</li>
+				<tr>
+					<td>{{ vm.name }}</td>
+					<td>{{ vm.template }}</td>
+					<td>id-{{ vm.id|stringformat:"03d" }}</td>
+					<td>{{ vm.user }}</td>
+					<td>{{ vm.get_state_display }}</td>
+					<td width="130px">&nbsp;
+						<a href="{% url vm_start vm.id%}"><img src="/static/css/play.png" alt="start" /></a>&nbsp;&nbsp;
+						<a href="{% url vm_stop vm.id%}"><img src="/static/css/stop.png" alt="stop" /></a>&nbsp;&nbsp;
+						<a href="{% url vm_delete vm.id%}"><img src="/static/css/delete.png" alt="delete" /></a>
+					</td>
+				</tr>
 			 {% endfor %}
-			</ul>
+			</table>
 			{% else %}
 				<p>No VMs are available.</p>
 			{% endif %}
 		</fieldset>
-		{% endif %}
+		<fieldset>
+			<legend> Performance Metrics</legend>
+			{% load chart_tags %}
+			{% chart %}
+				 chxr=0,0.01,1.5
+				 chxt=y,x
+				 chbh=a
+				 chs=960x280
+				 cht=lc
+				 chco=4D89F9
+				 chds=0,1
+			     chm=B,E5ECF9,0,0,0
+				 chd=t:{{ perfdata|join:',' }}
+				 chtt=Load+Average
+			{% endchart %}
+		</fieldset>
 	</div>
 	{% include "footer.html" %}
 </div>

@@ -12,6 +12,7 @@ html {
 body {
 	font-family: "Arial", sans-serif;
 	background: #456;
+	overflow-x: hidden;
 }
 
 p {padding: 0.2em 0 1em;}
@@ -47,7 +48,7 @@ table.userTable th a{
 }
 
 table.userTable tbody td {
-	width: 125px;
+	width: 105px;
 	border: solid 1px black;
 	text-align: center;
 	padding: 1em;	
@@ -78,7 +79,7 @@ table.userTable td a {
 	font-weight: bold;
 	border: solid 1px #999999;
 	text-decoration: none;
-	margin-bottom: .3em;
+	margin-bottom: 5px;
 	background-color: white;
 	cursor: move;
 }
@@ -99,8 +100,8 @@ table.userTable td a {
 a#nodelink {
 	text-decoration:none;
 	color: white;
-
 }
+
 #container
 {
 	margin: 0 30px;

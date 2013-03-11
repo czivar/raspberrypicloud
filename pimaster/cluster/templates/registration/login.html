@@ -22,24 +22,19 @@
 <div id="container">
 	{% include "header.html" %}
     <div id="content">
-		<div id="formbox">
-			<h4 style="font-size: 16px; color: red;"> 
-				<div> 
+		<div id="formbox" style="padding-top: 100px;">
+			 <form id="login" method="post" action="{% url django.contrib.auth.views.login %}">
+				{% csrf_token %}
+				<table>
+					<tr><td>{{ form.username.label_tag }}</td><td>{{ form.username }}</td></tr>
+					<tr><td>{{ form.password.label_tag }}</td><td>{{ form.password }}</td></tr>
+				</table>
+				<input type="hidden" name="next" value="/management/" />
+				<div style="font-size: 12px; color: red;"> 
 					{% if form.errors %}
-				   Your username and password didn't match. Please try again. <br />
+				   Your username and password didn't match. Please try again. 
 					{% endif %}
 				</div>
-			</h4>
-			<br />
-			<br />
-			<br />
-			 <form id="login" method="post" action="{% url django.contrib.auth.views.login %}">
-					{% csrf_token %}
-					<table>
-						<tr><td>{{ form.username.label_tag }}</td><td>{{ form.username }}</td></tr>
-						<tr><td>{{ form.password.label_tag }}</td><td>{{ form.password }}</td></tr>
-					</table>
-				<input type="hidden" name="next" value="/management" />
 				<input value="Login" tabindex="100" type="submit">
 			</form>
 		</div>

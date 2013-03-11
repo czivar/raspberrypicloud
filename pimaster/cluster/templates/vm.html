@@ -14,16 +14,21 @@
 		<div id="rightcontent">
 			<h2> Edit virtual machine </h2>
 			<div id="stylized" class="myform">
-				<form action="{% url vms %}" method="post"> {% csrf_token %}
-					{{ form.non_field_errors }} 
-					<label>
-					{{ from.name }}
-					<span class="small">{{ form.name.errors }}</span>
-					</label>
-					<input type="submit" value="Submit" />
+				<form action="{% url vm id %}" method="post"> {% csrf_token %} 
+					{% for field in form %}
+						<label>
+							{{ field.label }}
+							{% if field.errors %}
+								<span class="small"> {% for error in field.errors %} {{ error }} &nbsp; {% endfor %} </span>
+							{% endif %}
+						</label>
+						{{ field }} 
+					{% endfor %}
+					<input type="submit" value="Edit Virtual Machine" />
 					<div class="spacer"></div>
 				</form>
 			</div>
+			<br />
 		</div>
 	</div>
 	{% include "footer.html" %}

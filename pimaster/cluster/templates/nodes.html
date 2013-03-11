@@ -5,7 +5,6 @@
 	<title>Node information</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 	<link href='{% static "css/style.css" %}' rel='stylesheet' type='text/css'>
-	<script type="text/javascript" src="/static/js/chart1.js"></script>
 	<script type="text/javascript" src="/static/js/EventHelpers.js"></script>
 	<script type="text/javascript" src="/static/js/DragDropHelpers.js"></script>
 	<script type="text/javascript" src="/static/js/permissionForm.js"></script>
@@ -28,25 +27,11 @@
 			<table class="sample" style="float: left; text-align: center; margin-left: 100px;">
 				<tr><td>Left</td></tr>
 			{% for node in nodes %}
-			  {% if node <= 7 %}
-				{% if node in actives %}
-				<tr><td id="green"><a id="nodelink" href="../../node/{{ node }}/">Pi{{ node }}</a></td></tr>
+				{% if node.state = 1 %}
+				<tr><td id="green"><a id="nodelink" href="{% url node node.id %}">{{ node }}</a></td></tr>
 				{% else %}
-				<tr><td id="red"><a id="nodelink" href="../../node/{{ node }}/">Pi{{ node }}</a></td></tr>
+				<tr><td id="red"><a id="nodelink" href="{% url node node.id %}">{{ node }}</a></td></tr>
 				{% endif %}
-			  {% endif %}
-			{% endfor %}
-			</table>
-			<table class="sample" style="text-align: center; ">
-				<tr><td>Right</td></tr>
-			{% for node in nodes %}
-			  {% if node > 7 %}
-				{% if node in actives %}
-				<tr><td id="green"><a id="nodelink" href="../../node/{{ node }}/">Pi{{ node }}</a></td></tr>
-				{% else %}
-				<tr><td id="red"><a id="nodelink" href="../../node/{{ node }}/">Pi{{ node }}</a></td></tr>
-				{% endif %}
-			  {% endif %}
 			{% endfor %}
 			</table>
 		</div>
