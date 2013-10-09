@@ -14,4 +14,3 @@ This repository will contain:
 
 More information about us: http://raspberrypicloud.wordpress.com/ .
 
-Please feel free to contact me: Richard Cziva (czivar@ik.bme.hu).
